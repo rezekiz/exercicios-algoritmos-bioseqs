@@ -127,11 +127,67 @@ def conteudo_gc(seq):
 
 conteudo_gc("gcta") 
 
+def transc(seq):
+
+    '''
+        Função que itera sobre uma sequência de DNA e devolve
+    a sequência transcrita.
+
+    Lógica:
+    A -> U
+    T -> A
+    C -> G
+    G -> C
+
+    Parameters:
+    ------------
+        seq : str Sequência de DNA
+            Uma string que representa a sequência de DNA
+    '''
+
+    if not validar_dna(seq):
+        print("Sequência inválida")
+        return None
+
+    '''
+    Aqui é utilizada a função 'validar_dna' para garantir que a sequência não possui caracteres inválidos
+    '''
+
+    dna = aprimorar_dna(seq)
+    mrna = ''
+
+    '''
+    A variável dna vai buscar a sequência aprimorada pela função definida anteriormente
+    '''
+
+    for base in dna:
+        if base == 'A':
+          mrna += 'U'
+        elif base == 'T':
+          mrna += 'A'
+        elif base == 'C':
+          mrna += 'G'
+        elif base == 'G':
+          mrna += 'C'
+    '''
+    Returns:
+    --------
+        str
+          Sequência de mrna
+    '''
+    return mrna
+
+'''
+Chama a função 'transc' para fornecer uma varável, 'resultado'
 '''
 
-SECÇÃO PARA FUNÇÃO TRANSCRIÇÃO ASSIM QUE ESTIVER DEVIDAMENTE DOCUMENTADA
+resultado = transc(seq)
 
 '''
+Se a sequência transcrita for válida, imprime o resultado
+'''
+if resultado is not None:
+    print('A sequência de mRNA correspondente é:', resultado)
 
 def complemento_inverso(sequencia : str) -> str:
     '''
