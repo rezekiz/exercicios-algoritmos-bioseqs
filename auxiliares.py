@@ -31,7 +31,7 @@ def validar_dna(seq):
     else:
         return True
 
-def aprimorar_dna(seq):
+def aprimorar_seq(seq):
     """
     Devolve uma sequência de ADN só com letras maiúsculas e sem espaços em branco
 
