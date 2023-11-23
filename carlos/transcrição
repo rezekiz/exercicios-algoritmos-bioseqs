@@ -59,3 +59,32 @@ Se a sequência transcrita for válida, imprime o resultado
 '''
 if resultado is not None:
     print('A sequência de mRNA correspondente é:', resultado)
+
+
+
+
+
+import unittest
+
+class TestValidarData(unittest.TestCase):
+    def test_transc_vazio(self):
+        self.assertFalse( transc("") )
+    
+    def test_transc_separador_invalido(self):
+        self.assertFalse( transc("AAAT-TG-CG.TGG.TG-TGGT") )
+
+    def test_transc_nucleotido_invalido(self):
+        self.assertFalse( transc("RATAFAT") )
+        
+    def test_transc_correta(self):
+        self.assertTrue( transc(" AAACTGT CG ") )
+
+    def test_transc_minuscula(self):
+        self.assertTrue( transc("atgctcgatagct") )
+    
+    def test_trans_correta(self):
+        self.assertEqual( transc('AATTCCGG'), 'UUAAGGCC' )
+
+
+suite = unittest.TestLoader().loadTestsFromTestCase(TestValidarData)
+unittest.TextTestRunner( verbosity=3 ).run( suite )
