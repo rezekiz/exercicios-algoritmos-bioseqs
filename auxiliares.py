@@ -266,3 +266,26 @@ def score_subst(ele_string_1, ele_string_2, g = 0):
     return -1
 
 
+def get_orfs(seq):
+    """
+    Função que a partir de uma sequência de DNA ou RNA origina diferentes tipos de ORFS.
+
+    Parâmetro
+    --------
+    seq : str
+        Sequência de DNA ou RNA.
+
+    Returns
+    -------
+    lista
+        Lista das ORFs geradas a partir da sequência.
+    
+    """
+    seq_comp_inv = complemento_inverso(seq)
+    lista_orfs = [
+            seq[0:], seq[1:], seq[2:],
+            seq_comp_inv[0:], seq_comp_inv[1:], seq_comp_inv[2:]
+        ]
+    return lista_orfs
+    
+
