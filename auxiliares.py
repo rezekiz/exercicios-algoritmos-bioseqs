@@ -266,6 +266,66 @@ def score_subst(ele_string_1, ele_string_2, g = 0):
     return -1
 
 
+def complemento_inverso(sequencia : str, tipo_seq) -> str:
+    '''
+    Função que itera sobre uma sequência de DNA e devolve
+    o complemento reverso de cada nucleotido.
+
+    Lógica:
+    A -> T
+    T -> A
+    C -> G
+    G -> C
+
+    Parâmetros
+    ----------
+
+    sequencia : str
+        sequência de DNA válida
+
+    Retorna
+    -------
+    str
+        sequência de nucléotidos complementar à cadeia fornecida
+
+    '''
+    assert sequencia != '' or sequencia != ' '
+    
+    assert validar_dna(sequencia)
+    
+
+    complementar = '' # inicializamos a cadeia complementar
+
+    if tipo_seq(sequencia) == 'DNA':
+
+        for base in sequencia.upper():
+            if base == 'A':
+                complementar += 'T'
+            elif base == 'T':
+                complementar += 'A'
+            elif base == 'C':
+                complementar += 'G'
+            elif base == 'G':
+                complementar += 'C'
+
+    elif tipo_seq(sequencia) == 'RNA':
+
+        for base in sequencia.upper():
+            if base == 'A':
+                complementar += 'U'
+            elif base == 'U':
+                complementar += 'A'
+            elif base == 'C':
+                complementar += 'G'
+            elif base == 'G':
+                complementar += 'C'
+       
+
+    return complementar[::-1]
+
+
+
+
 def get_orfs(seq):
     """
     Função que a partir de uma sequência de DNA ou RNA origina diferentes tipos de ORFS.
