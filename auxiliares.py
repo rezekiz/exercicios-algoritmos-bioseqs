@@ -31,7 +31,7 @@ def validar_dna(seq):
     else:
         return True
 
-def aprimorar_dna(seq):
+def aprimorar_seq(seq):
     """
     Devolve uma sequência de ADN só com letras maiúsculas e sem espaços em branco
 
@@ -266,18 +266,49 @@ def score_subst(ele_string_1, ele_string_2, g = 0):
     return -1
 
 
-def complemento_inverso(sequencia : str, tipo_seq) -> str:
+def tipo_seq(seq):
+    """
+    Função que a partir de uma sequência, classifica-a em DNA, RNA ou SEQUÊNCIA AMINÁCIDOS.
+
+    Parâmetro
+    ---------
+    seq : str 
+        A sequência a ser classificada.
+
+    Retorna
+    -------
+    str
+        A classificação da sequência.
+        
+    """
+
+    if not bool(seq):
+        raise ValueError("É uma sequência inválida")
+
+    seq = aprimorar_seq(seq)
+    
+    if validar_dna(seq):
+        return "DNA"
+        
+    if len([c for c in seq if c not in "ACGU"]) == 0:
+        return "RNA"
+        
+    elif len([c for c in seq if c not in "ABCDEFGHIKLMNPQRSTVWYZ_"]) == 0:
+        return "SEQUÊNCIA AMINOÁCIDOS"
+    
+    else:
+        raise ValueError("É uma sequência inválida")
+    
+
+
+
+
+def complemento_inverso(sequencia : str) -> str:
     '''
     Função que itera sobre uma sequência de DNA e devolve
     o complemento reverso de cada nucleotido.
 
-    Lógica:
-    A -> T
-    T -> A
-    C -> G
-    G -> C
-
-    Parâmetros
+    Parametros 
     ----------
 
     sequencia : str
@@ -288,16 +319,20 @@ def complemento_inverso(sequencia : str, tipo_seq) -> str:
     str
         sequência de nucléotidos complementar à cadeia fornecida
 
+    Levanta
+    -------
+
+    ValueError
+        caso não se trate de uma sequênica de DNA válida
+        
     '''
     assert sequencia != '' or sequencia != ' '
-    
-    assert validar_dna(sequencia)
+    #assert validar_dna(sequencia)
     
 
     complementar = '' # inicializamos a cadeia complementar
 
     if tipo_seq(sequencia) == 'DNA':
-
         for base in sequencia.upper():
             if base == 'A':
                 complementar += 'T'
@@ -307,9 +342,8 @@ def complemento_inverso(sequencia : str, tipo_seq) -> str:
                 complementar += 'G'
             elif base == 'G':
                 complementar += 'C'
-
+    
     elif tipo_seq(sequencia) == 'RNA':
-
         for base in sequencia.upper():
             if base == 'A':
                 complementar += 'U'
@@ -319,9 +353,12 @@ def complemento_inverso(sequencia : str, tipo_seq) -> str:
                 complementar += 'G'
             elif base == 'G':
                 complementar += 'C'
-       
+    
+    else:
+        raise ValueError('É uma sequência inválida')
 
     return complementar[::-1]
+
 
 
 
