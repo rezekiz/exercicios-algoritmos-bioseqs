@@ -1,3 +1,33 @@
+'''
+É possível utilizar funções predefinidas para a realização da transcrição, importando-as do BioPython:
+'''
+
+from Bio.Seq import Seq
+
+'''
+Assim basta definir a sequência a ser analisada
+'''
+
+# Sequência de DNA
+sequencia_DNA = "ATGGTCTACGTCGATCGTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCTAGCT"
+
+'''
+E utilizar a função predefinida para realizar a transcrição 
+'''
+
+# Transcrição do DNA para RNA
+rna_sequence = Seq(sequencia_DNA).transcribe()
+
+print(rna_sequence)
+
+'''
+
+
+----
+
+
+'''
+
 def transc(seq):
 
     '''
