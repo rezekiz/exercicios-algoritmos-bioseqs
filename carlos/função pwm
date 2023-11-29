@@ -1,0 +1,53 @@
+'''
+A instação da biblioteca *tabulate* permite a utilização de um conjunto de ferramentas de forma a ter um output mais organizado
+'''
+
+pip install tabulate
+
+
+'''
+O *import* do módulo tabulate irá permitir a utilização das funções e classes fornecidas pelo *tabulate* para formatar e exibir dados tabulares.
+'''
+from tabulate import tabulate
+
+seqs = ['TGACTATACGTATGGTAGAT', 'ATCGTATACGTAGGTAGAC', 'TAGCTAGTCGTATGGTAGAT']
+pseudo = 0.5
+
+def pwm(seqs: list[str], pseudo: float = 0) -> list[dict[str, float]]:
+  alfabeto = 'ACGT'
+
+  """
+  Calcula a matriz PWM (Matriz de Peso e Posição) para as sequências fornecidas
+
+  Parameters
+  -------------
+  seqs : list[str]
+      Recebe uma lista de strings que representam as sequências
+
+  pseudo : float = 0
+      Recebe um valor opcional, pseudo, que em caso de omissão é = 0
+
+
+  Returns
+  -------------
+  pwm_matrix : list[dict[str, float]]
+      Retorna uma *lista de dicionários*, onde cada *dicionário* terá uma chave no formato de *string*, e um valor no formato de *float*
+
+  """
+
+  for seq in seqs:
+    for idx, b in enumerate(seq):
+      assert b in alfabeto, f'Caracter {b} na posição {idx} da sequência {seq} inválido!'
+
+  pwm_matrix = [{b: (pos.count(b) + pseudo) / (len(seqs) + len(alfabeto) * pseudo)
+    for b in alfabeto}
+      for pos in zip(*seqs)]
+
+  return pwm_matrix
+
+resultado = pwm(seqs, pseudo)  # Associação do resultado da função a uma variável de forma a ser mais fácil imprimir o resultado
+
+# Impressão da matriz formatada com o módulo tabulate
+headers = ["Base"] + [f"Posição {i+1}" for i in range(len(seqs[0]))]
+table = [[base] + [round(resultado[i][base], 3) for i in range(len(resultado))] for base in "ACGT"]
+print(tabulate(table, headers))
