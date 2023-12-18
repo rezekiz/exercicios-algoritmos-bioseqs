@@ -300,10 +300,7 @@ def tipo_seq(seq):
         raise ValueError("É uma sequência inválida")
     
 
-
-
-
-def complemento_inverso(sequencia : str) -> str:
+def complemento_inverso(sequencia: str) -> str:
     '''
     Função que itera sobre uma sequência de DNA e devolve
     o complemento reverso de cada nucleotido.
@@ -358,9 +355,6 @@ def complemento_inverso(sequencia : str) -> str:
         raise ValueError('É uma sequência inválida')
 
     return complementar[::-1]
-
-
-
 
 
 def get_orfs(seq):
