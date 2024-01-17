@@ -420,3 +420,70 @@ def validar_query_map(qm):
             raise AssertionError ('Existe um elemento que não é DNA')
     
 
+#######################
+#   Auxiliares BLAST  #
+#######################
+        
+# RUI 
+def expande_dir(query : str , seq : str , off_q : int , off_s : int, way : int) -> tuple:
+    '''
+    Função que estende para a esquerda se recebe -1 ou para a direita se 1
+
+    Itera sobre a query e a sequência e casa as diferentes posições de modo a procurar
+    hits possíveis
+
+    Devolve o número de bases iguais entre a query e a sequência do hit e respetivo tamanho
+
+    Parâmetros
+    ----------
+
+    query : str 
+        sequencia válida de DNA
+    
+    seq : str 
+        sequencia válida de DNA
+    
+    off_q : int
+        offset inicial na query
+    
+    off_s : int
+        offset inicial na sequência
+    
+    way : int
+        assume o valor 1 ou -1 indicando a direção para qual a 
+        função irá estender (direita ou esquerda respetivamente)
+
+    Returns
+    -------
+
+    tuple
+        devolve um tuplo com o tamanho do hit e o número de bases que 
+        correspondem
+
+    '''
+    from scripts.auxiliares import validar_dna
+    assert validar_dna(query) and validar_dna(seq)
+
+    assert way == 1 or way == -1                                                           # Garantimos que apenas é dado à função o valor "legal" para a variável-direção
+
+    tam     = 0                                                                            # Iniciamos a variável que corresponde ao tamanho do hit   
+
+    matches = 0                                                                            # Iniciamos a variável que corresponde ao número de matches
+
+    while 0 < off_q and 0 < off_s and 0 <= off_q < len(query) and 0 <= off_s < len(seq):   # Garante que nenhum dos offsets será negativo ou estará fora dos índices possíveis das strings sobre as quais iremos iterar
+                                                                                            
+        '''0 < off_q and 0 < off_s 
+
+        é importante garantir que nenhum dos números assume caracter negativo, para evitar
+        casos em que uma das sequencias tem um tamanho maior que a outra.'''
+        
+        tam += 1                        # O tamanho do hit aumenta logo no início independentemente de haverem matches
+            
+        if query[off_q] == seq[off_s]:
+            matches += 1                # O número de matches aumenta se e só se a base for igual em ambas as strings
+            
+        # Passamos ao próximo indice acrescentando a variável-direção
+        off_q += way
+        off_s += way
+       
+    return tam, matches 
