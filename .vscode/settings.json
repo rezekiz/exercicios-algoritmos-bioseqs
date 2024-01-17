@@ -1,3 +1,7 @@
 {
-    "CodeGPT.apiKey": "CodeGPT Plus Beta"
+    "CodeGPT.apiKey": "CodeGPT Plus Beta",
+    "CodeGPT.Autocomplete.enabled": true,
+    "CodeGPT.Autocomplete.suggestionDelay": 50000,
+    "CodeGPT.Autocomplete.maxTokens": 1000,
+    "CodeGPT.Autocomplete.provider": "Anthropic - claude-2"
 }
