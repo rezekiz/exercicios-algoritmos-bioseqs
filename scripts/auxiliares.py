@@ -4,21 +4,22 @@ def validar_dna(seq):
     Devolve a validade de uma sequência de ADN
 
     
-    Parameters
+    Parâmetro
     -------------
     seq : str
         Uma string que representa a sequência de ADN
 
     
-    Returns
+    Retorna
     -------------
-    bool : True se for uma sequência válida ou False se for uma sequência inválida
+    bool : True se for uma sequência válida, False se for uma sequência inválida
     
     """
-    if not bool(seq): return False
     
     seq = seq.upper()        
     seq = seq.replace(" ","")   
+    
+    if not bool(seq): return False
 
     valido_dna = True
     
@@ -33,17 +34,19 @@ def validar_dna(seq):
 
 def aprimorar_seq(seq):
     """
-    Devolve uma sequência de ADN só com letras maiúsculas e sem espaços em branco
+    Devolve uma sequência só com letras maiúsculas e sem espaços em branco
 
-    Parameters
+    
+    Parâmetro
     -------------
     seq : str
-        Uma string que representa a sequência de ADN
+        Uma string que representa a sequência
 
-    Returns
+        
+    Retorna
     -------------
     str
-        sequência de ADN com as bases em maiúsculas e sem espaços em branco
+        sequência com as bases em maiúsculas e sem espaços em branco
     
     """
     return seq.upper().replace(" ","")
@@ -267,116 +270,147 @@ def score_subst(ele_string_1, ele_string_2, g = 0):
 
 
 def tipo_seq(seq):
+    
     """
-    Função que a partir de uma sequência, classifica-a em DNA, RNA ou SEQUÊNCIA AMINÁCIDOS.
+    A partir de uma sequência, classifica-a em ADN, RNA ou Sequência aminoácidos
 
-    Parâmetro
+    
+    Parâmetro:
     ---------
     seq : str 
-        A sequência a ser classificada.
+        A sequência a ser classificada
 
-    Retorna
-    -------
-    str
-        A classificação da sequência.
         
+    Retorna:
+    ---------
+    str
+        A classificação da sequência: 
+
+        
+    Levanta:
+    ---------
+    ValueError:
+        Se a sequência for inválida
+
     """
+
+    seq = aprimorar_seq(seq)
 
     if not bool(seq):
         raise ValueError("É uma sequência inválida")
-
-    seq = aprimorar_seq(seq)
     
     if validar_dna(seq):
-        return "DNA"
+        return "ADN"
         
     if len([c for c in seq if c not in "ACGU"]) == 0:
         return "RNA"
         
     elif len([c for c in seq if c not in "ABCDEFGHIKLMNPQRSTVWYZ_"]) == 0:
-        return "SEQUÊNCIA AMINOÁCIDOS"
+        return "Sequência aminoácidos"
     
     else:
         raise ValueError("É uma sequência inválida")
     
 
-def complemento_inverso(sequencia: str) -> str:
-    '''
-    Função que itera sobre uma sequência de DNA e devolve
-    o complemento reverso de cada nucleotido.
+def complemento_inverso(sequencia):
 
-    Parametros 
+    '''
+    Função que itera sobre uma sequência de ADN e devolve o complemento inverso de cada nucleótido.
+
+    Lógica:
+    A -> T
+    T -> A
+    C -> G
+    G -> C
+
+    
+    Parâmetros
     ----------
-
     sequencia : str
-        sequência de DNA válida
+        sequência de ADN 
 
-    Retorna
-    -------
-    str
-        sequência de nucléotidos complementar à cadeia fornecida
-
-    Levanta
-    -------
-
-    ValueError
-        caso não se trate de uma sequênica de DNA válida
         
+    Retorna
+    ----------
+    complementar : str
+        sequência de nucléotidos complementar à cadeia fornecida
+    
+        
+    Levanta
+    ----------
+    AssertionError:
+        No caso da string inserida não ser válida
+        
+
     '''
-    assert sequencia != '' or sequencia != ' '
-    #assert validar_dna(sequencia)
-    
 
-    complementar = '' # inicializamos a cadeia complementar
+    assert validar_dna(sequencia), "Sequência Inválida"
+    
+    sequencia = aprimorar_seq(sequencia)
+    
+    complementar = '' 
 
-    if tipo_seq(sequencia) == 'DNA':
-        for base in sequencia.upper():
-            if base == 'A':
-                complementar += 'T'
-            elif base == 'T':
-                complementar += 'A'
-            elif base == 'C':
-                complementar += 'G'
-            elif base == 'G':
-                complementar += 'C'
-    
-    elif tipo_seq(sequencia) == 'RNA':
-        for base in sequencia.upper():
-            if base == 'A':
-                complementar += 'U'
-            elif base == 'U':
-                complementar += 'A'
-            elif base == 'C':
-                complementar += 'G'
-            elif base == 'G':
-                complementar += 'C'
-    
-    else:
-        raise ValueError('É uma sequência inválida')
+    for base in sequencia.upper():
+        if base == 'A':
+            complementar += 'T'
+        elif base == 'T':
+            complementar += 'A'
+        elif base == 'C':
+            complementar += 'G'
+        elif base == 'G':
+            complementar += 'C'
 
     return complementar[::-1]
 
 
 def get_orfs(seq):
-    """
-    Função que a partir de uma sequência de DNA ou RNA origina diferentes tipos de ORFS.
 
-    Parâmetro
-    --------
+    """
+    Gera Open Reading Frames (ORFs) a partir de uma sequência de ADN ou de RNA
+
+
+    Parâmetro:
+    -----------
     seq : str
-        Sequência de DNA ou RNA.
+        Sequência de ADN ou RNA
 
-    Returns
-    -------
+
+    Retorna:
+    --------
     lista
-        Lista das ORFs geradas a partir da sequência.
-    
+        Lista contendo ORFs gerados a partir da sequência.
+
+        
+    Levanta:
+    ------
+    ValueError
+        Se a sequência não for uma sequência válida
+
+
     """
-    seq_comp_inv = complemento_inverso(seq)
-    lista_orfs = [
+
+    
+    if tipo_seq(seq) == "ADN":
+
+        seq_comp_inv = complemento_inverso(seq)
+
+        lista_orfs = [
             seq[0:], seq[1:], seq[2:],
             seq_comp_inv[0:], seq_comp_inv[1:], seq_comp_inv[2:]
         ]
-    return lista_orfs
+
+        return lista_orfs
+
+    elif tipo_seq(seq) == "RNA":
+
+        lista_orfs = [
+            seq[0:], seq[1:], seq[2:],
+        ]
+        return lista_orfs
+    
+    else:
+       raise ValueError("Sequência inválida")
+
+    
     
 
