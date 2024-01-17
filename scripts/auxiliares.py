@@ -411,6 +411,12 @@ def get_orfs(seq):
     else:
        raise ValueError("Sequência inválida")
 
-    
+
+def validar_query_map(qm):
+    from scripts.auxiliares import validar_dna
+    for key in qm.keys():
+
+        if validar_dna(key) == False:
+            raise AssertionError ('Existe um elemento que não é DNA')
     
 
