@@ -15,6 +15,8 @@ def validar_dna(seq):
     bool : True se for uma sequência válida, False se for uma sequência inválida
     
     """
+    if not isinstance(seq, str):
+        raise AssertionError("A sequência deve ser uma string")
     
     seq = seq.upper()        
     seq = seq.replace(" ","")   
